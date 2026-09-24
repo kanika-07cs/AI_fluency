@@ -1,0 +1,364 @@
+<html>
+
+<head>
+
+    <title>LLM vs LLM + Tool</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f5f7fb;
+            margin: 0;
+            color: #222;
+        }
+
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .plain {
+            border-top: 5px solid #dc2626;
+        }
+
+        .tool {
+            border-top: 5px solid #16a34a;
+        }
+
+        .flow {
+            background: #111827;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            line-height: 1.8;
+        }
+
+        .warning {
+            background: #fef2f2;
+            padding: 15px;
+            border-left: 5px solid #dc2626;
+        }
+
+        .success {
+            background: #f0fdf4;
+            padding: 15px;
+            border-left: 5px solid #16a34a;
+        }
+
+        .tool-call {
+            background: #ecfdf5;
+            padding: 15px;
+            border-left: 5px solid #16a34a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #e5e7eb;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>LLM vs LLM + External Tool</h1>
+
+    <p>Student Attendance Assistant</p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="box">
+
+        <h2>Scenario</h2>
+
+        <p>
+            The college maintains student attendance records
+            in an external attendance notice.
+        </p>
+
+        <p>
+            A plain language model does not automatically have
+            access to this information.
+        </p>
+
+        <table>
+
+            <tr>
+                <th>Student ID</th>
+                <th>Student</th>
+                <th>Attendance</th>
+            </tr>
+
+            <tr>
+                <td>23CS101</td>
+                <td>Kanika</td>
+                <td>87%</td>
+            </tr>
+
+            <tr>
+                <td>23CS102</td>
+                <td>Arun</td>
+                <td>76%</td>
+            </tr>
+
+            <tr>
+                <td>23CS103</td>
+                <td>Priya</td>
+                <td>92%</td>
+            </tr>
+
+            <tr>
+                <td>23CS104</td>
+                <td>Rahul</td>
+                <td>81%</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    <div class="comparison">
+
+
+        <!-- PLAIN LLM -->
+
+        <div class="box plain">
+
+            <h2>1. Plain LLM</h2>
+
+            <p>
+                No external tool is available.
+            </p>
+
+            <h3>Question</h3>
+
+            <p>
+                What is the current attendance of
+                student 23CS101?
+            </p>
+
+            <div class="warning">
+
+                <strong>Limitation</strong>
+
+                <p>
+                    The LLM cannot access the current
+                    attendance notice by itself.
+                </p>
+
+                <p>
+                    It should not guess the student's
+                    attendance.
+                </p>
+
+            </div>
+
+            <div class="flow">
+
+                User<br>
+                ↓<br>
+                LLM<br>
+                ↓<br>
+                Answer
+
+            </div>
+
+        </div>
+
+
+        <!-- LLM + TOOL -->
+
+        <div class="box tool">
+
+            <h2>2. LLM + One Tool</h2>
+
+            <p>
+                The LLM has access to one external tool:
+            </p>
+
+            <div class="tool-call">
+
+                <strong>read_attendance_notice()</strong>
+
+                <p>
+                    Reads the attendance notice and
+                    returns its visible information.
+                </p>
+
+            </div>
+
+            <h3>Question</h3>
+
+            <p>
+                What is the current attendance of
+                student 23CS101?
+            </p>
+
+            <div class="flow">
+
+                User<br>
+                ↓<br>
+                LLM<br>
+                ↓<br>
+                Tool Call<br>
+                ↓<br>
+                read_attendance_notice()<br>
+                ↓<br>
+                Attendance Record<br>
+                ↓<br>
+                LLM<br>
+                ↓<br>
+                87%
+
+            </div>
+
+            <div class="success">
+
+                <strong>Result:</strong>
+
+                <p>
+                    Student 23CS101 has 87% attendance.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>What is a Tool?</h2>
+
+        <p>
+            A tool is an external function that provides
+            the LLM with information or capabilities that
+            are not available from its own trained knowledge.
+        </p>
+
+
+        <h2>What is a Tool Call?</h2>
+
+        <p>
+            A tool call is a structured request from the LLM
+            asking the application to execute a specific
+            external function.
+        </p>
+
+        <div class="flow">
+
+            User Question<br>
+            ↓<br>
+            LLM<br>
+            ↓<br>
+            read_attendance_notice()<br>
+            ↓<br>
+            Attendance Data<br>
+            ↓<br>
+            LLM<br>
+            ↓<br>
+            Final Answer
+
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>Comparison</h2>
+
+        <table>
+
+            <tr>
+                <th>Capability</th>
+                <th>Plain LLM</th>
+                <th>LLM + Tool</th>
+            </tr>
+
+            <tr>
+                <td>Answer general questions</td>
+                <td>Yes</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Access attendance notice</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Retrieve actual attendance</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Call external function</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+            <tr>
+                <td>Use external result before answering</td>
+                <td>No</td>
+                <td>Yes</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
